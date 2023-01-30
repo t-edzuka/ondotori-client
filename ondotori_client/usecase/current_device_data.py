@@ -1,4 +1,5 @@
-from typing import List, Mapping, Union
+from collections.abc import Mapping
+from typing import Union
 
 import httpx
 from httpx import Response
@@ -26,13 +27,20 @@ class ResponseImpl(ResponseInterface):
         if self.is_success:
             return OndotoriResponse.parse_raw(response_content)
         elif self.is_error and self.status_code == 400:
-            raise ValueError(f"""Ondotori access failed. status code:{self.status_code}\n
-                             content: {self.response.json()}""")
+            raise ValueError(
+                f"""Ondotori access failed. status code:{self.status_code}\n
+                             content: {self.response.json()}"""
+            )
+        elif self.is_error:
+            raise ValueError(
+                f"Failed: status code {self.status_code!r}, content: {response_content!r}"
+            )
+
         else:
-            raise ValueError(f"Failed: status code {self.status_code}, content: {response_content}")
+            raise
 
     @property
-    def headers(self) -> List[tuple[bytes, bytes]]:
+    def headers(self) -> list[tuple[bytes, bytes]]:
         return self.response.headers.raw
 
     @property
@@ -45,10 +53,10 @@ class ResponseImpl(ResponseInterface):
 
 
 def fetch_current_sensor_data(
-        access_info: AccessInfo,
-        url: str = ONDOTORI_ENDPOINT,
-        headers: Union[Mapping[str, str], None] = None,
-        timeout_sec: float = 2.0,
+    access_info: AccessInfo,
+    url: str = ONDOTORI_ENDPOINT,
+    headers: Union[Mapping[str, str], None] = None,
+    timeout_sec: float = 2.0,
 ) -> ResponseInterface:
     if headers is None:
         headers = ONDOTORI_HEADER
