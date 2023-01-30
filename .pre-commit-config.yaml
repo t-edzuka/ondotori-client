@@ -1,0 +1,49 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-yaml
+        args: [ "--unsafe" ]
+      - id: check-toml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        # aws credentialsを誤ってコミットしない
+      - id: detect-aws-credentials
+  # pytest
+  - repo: local
+    hooks:
+#      - id: pytest-check
+#        name: pytest-check
+#        entry: pytest -s -v
+#        language: system
+#        types: [ python ]
+#        pass_filenames: false
+#        always_run: true
+
+      - id: mypy
+        name: mypy-local
+        entry: mypy nb
+        args: [ "--ignore-missing-imports" ]
+        types: [ python ]
+        language: system
+        pass_filenames: false
+
+      - id: format
+        name: format-local
+        entry: just format
+        types: [ python ]
+        language: system
+        pass_filenames: false
+
+      - id: lint
+        name: lint-local
+        entry: just lint
+        types: [ python ]
+        language: system
+        pass_filenames: false
+
+      - id: pyupgrade
+        name: Pyupgrade
+        entry: pyupgrade --py39-plus
+        types: [ python ]
+        language: system

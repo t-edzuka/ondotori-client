@@ -1,0 +1,96 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ondotori_client"
+description = 'Get ondotori data'
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = []
+authors = [
+    { name = "t-edzuka", email = "t.edzuka@happy-quality.jp" },
+]
+
+dependencies = [
+    "pydantic",
+    "httpx",
+    "rich",
+]
+
+dynamic = ["version"]
+
+[project.urls]
+Documentation = "https://github.com/unknown/stomata-ddd#readme"
+Issues = "https://github.com/unknown/stomata-ddd/issues"
+Source = "https://github.com/unknown/stomata-ddd"
+
+[project.optional-dependencies]
+
+dev = [
+    "pytest",
+    "coverage[toml] >= 6.5.0",
+    "mypy == 0.991",
+    "ruff == 0.0.222",
+    "black",
+    "isort >=5.11.4",
+    "pre-commit >=2.21.0",
+]
+
+
+[tool.isort]
+profile = "black"
+#known_third_party = ["pydantic"]
+
+[tool.ruff]
+select = [
+    "E", # pycodestyle errors
+    "W", # pycodestyle warnings
+    "F", # pyflakes
+    # "I",  # isort
+    "C", # flake8-comprehensions
+    "B", # flake8-bugbear
+]
+ignore = [
+    "E501", # line too long, handled by black
+    "B008", # do not perform function calls in argument defaults
+]
+
+[tool.mypy]
+plugins = [
+    "pydantic.mypy"
+]
+strict = true
+ignore_missing_imports = true
+check_untyped_defs = true
+follow_imports = "silent"
+warn_redundant_casts = true
+warn_unused_ignores = true
+disallow_any_generics = true
+
+no_implicit_reexport = true
+# for strict mypy: (this is the tricky one :-))
+disallow_untyped_defs = true
+
+
+[tool.coverage.run]
+branch = true
+parallel = true
+omit = [
+    "ondotori_client/__init__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "no cov",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
+
+[tool.hatch.version]
+path = "ondotori_client/__init__.py"
+
+[tool.pytest.ini_options]
+testpaths = ["tests", ]
+filterwarnings = ["ignore::DeprecationWarning", ]
