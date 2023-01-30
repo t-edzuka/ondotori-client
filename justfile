@@ -20,6 +20,7 @@ install:
     {{vpy}} -m pip install --upgrade pip wheel
     {{vpy}} -m pip install --upgrade -r requirements/main.txt -r requirements/dev.txt -e "."
     {{vpy}} -m pip check
+    pre-commit install
 
 
 

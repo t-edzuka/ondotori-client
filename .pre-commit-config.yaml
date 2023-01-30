@@ -14,17 +14,8 @@ repos:
       - id: pyupgrade
         entry: pyupgrade --py39-plus
 
-  # pytest
   - repo: local
     hooks:
-      #      - id: pytest-check
-      #        name: pytest-check
-      #        entry: pytest -s -v
-      #        language: system
-      #        types: [ python ]
-      #        pass_filenames: false
-      #        always_run: true
-
       - id: mypy
         name: mypy-local
         entry: mypy ondotori_client
